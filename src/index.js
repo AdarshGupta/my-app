@@ -109,9 +109,14 @@ class Game extends React.Component {
                 desc = 'Go to start';
             }
             
+            let buttonSelection = null;
+            if(this.state.stepNumber === move){
+                buttonSelection = 'highlight-btn'
+            }
+
             return (
                 <li key={move}>
-                    <button onClick={() => this.jumpTo(move)}>{desc}</button>
+                    <button onClick={() => this.jumpTo(move)} className={buttonSelection}>{desc}</button>
                 </li>
             );
         });
