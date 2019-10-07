@@ -4,7 +4,7 @@ import './index.css';
 
 function Square(props){
     return (
-        <button className="square" onClick={props.onClick}>
+        <button className={"square " + props.winnerBtn} onClick={props.onClick}>
             {props.value}
         </button>
     );
@@ -13,10 +13,19 @@ function Square(props){
 class Board extends React.Component {
 
     renderSquare(i) {
+        let btnColor = 'plain-btn';
+        if(calculateWinner(this.props.squares)){
+            const [a, b, c] = calculateWinner(this.props.squares)
+            if(i === a || i === b || i === c){
+                btnColor = 'winner-btn'
+            }        
+        }
         return (
             <Square 
                 value={this.props.squares[i]} 
-                onClick={() => this.props.onClick(i)} 
+                onClick={() => this.props.onClick(i)}
+                key={i}
+                winnerBtn={btnColor} 
             />
         );
     }
@@ -30,7 +39,7 @@ class Board extends React.Component {
             for(let col = row * gridSize; col < (row * gridSize) + gridSize; col++){
                 boardCols.push(this.renderSquare(col));
             }
-            boardRows.push(<div className="board-row">{boardCols}</div>);
+            boardRows.push(<div className="board-row" key={row}>{boardCols}</div>);
         }
 
         return boardRows;
@@ -144,7 +153,7 @@ class Game extends React.Component {
 
         let status;
         if(winner){
-            status = 'Winner: ' + winner;
+            status = 'Winner: ' + current.squares[winner[0]];
         }
         else{
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
@@ -179,7 +188,7 @@ function calculateWinner(squares){
     for(let i = 0; i < lines.length; i++){
         const [a, b, c] = lines[i];
         if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]){
-            return squares[a];
+            return lines[i];
         }
     }
     return null;

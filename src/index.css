@@ -52,3 +52,7 @@ body {
 .highlight-btn {
   color: #15f;
 }
+
+.winner-btn {
+  color: red;
+}
